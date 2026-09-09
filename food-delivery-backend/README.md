@@ -80,7 +80,7 @@ food-delivery-backend/
 | **H2 Database** | Latest | In-memory |
 | **Jackson** | 3.x | Spring Boot 4 default |
 | **Springdoc OpenAPI** | 3.1.1 | Compatible with Spring Boot 4 |
-| **Lombok** | 1.18.36 | Latest |
+| **Lombok** | 1.18.48 | JDK 25 support (added in 1.18.40) |
 | **Maven** | 3.9+ | Build tool |
 
 ## 🚀 Prerequisites

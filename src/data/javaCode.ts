@@ -19,6 +19,7 @@ export const pomXml = `<?xml version="1.0" encoding="UTF-8"?>
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>4.1.1</spring.boot.version>
+        <lombok.version>1.18.48</lombok.version>
     </properties>
 
     <dependencyManagement>
@@ -72,11 +73,12 @@ export const pomXml = `<?xml version="1.0" encoding="UTF-8"?>
             <version>3.1.1</version>
         </dependency>
 
-        <!-- Lombok -->
+        <!-- Lombok 1.18.48 - Required for Java 25 compatibility -->
+        <!-- JDK 25 support was added in Lombok 1.18.40 -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.36</version>
+            <version>1.18.48</version>
             <scope>provided</scope>
         </dependency>
 
@@ -120,7 +122,7 @@ export const pomXml = `<?xml version="1.0" encoding="UTF-8"?>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>\${lombok.version}</version>
+                            <version>1.18.48</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

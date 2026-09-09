@@ -128,17 +128,16 @@ function App() {
         </nav>
 
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
-          <div className="bg-gray-700/50 rounded-lg p-3">
-            <p className="text-xs text-gray-400">Tech Stack</p>
-            <div className="flex flex-wrap gap-1 mt-2">
-              {['Java 25', 'Spring Boot 4.1', 'H2', 'JPA'].map((tech) => (
-                <span key={tech} className="text-xs bg-gray-600 text-gray-300 px-2 py-0.5 rounded">
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
+              <div className="bg-gray-700/50 rounded-lg p-3">
+                <p className="text-xs text-gray-400">Tech Stack</p>
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {['Java 25', 'Spring Boot 4.1', 'Lombok 1.18.48', 'H2'].map((tech) => (
+                    <span key={tech} className="text-xs bg-gray-600 text-gray-300 px-2 py-0.5 rounded">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>        </div>
       </aside>
 
       {/* Main Content */}
@@ -412,6 +411,22 @@ function App() {
           {/* SETUP */}
           {activeSection === 'setup' && (
             <div className="space-y-8">
+              <div className="bg-gradient-to-r from-red-500/10 to-orange-500/10 border border-red-500/30 rounded-xl p-6 mb-6">
+                <h4 className="text-lg font-bold text-red-400 mb-3">⚠️ Critical: Lombok Version for Java 25</h4>
+                <p className="text-gray-300 text-sm mb-3">
+                  If you encounter <code className="bg-gray-700 px-2 py-0.5 rounded">ExceptionInInitializerError: com.sun.tools.javac.code.TypeTag :: UNKNOWN</code> 
+                  or <code className="bg-gray-700 px-2 py-0.5 rounded">cannot find symbol</code> errors for getters/setters, 
+                  you need <strong className="text-orange-400">Lombok 1.18.48</strong> or later.
+                </p>
+                <div className="bg-gray-900 rounded-lg p-4 text-sm text-gray-300 space-y-2">
+                  <p className="text-gray-400"># JDK 25 support was added in Lombok 1.18.40</p>
+                  <p className="text-gray-400"># Use 1.18.48 (latest stable) for full compatibility</p>
+                  <p className="mt-3 text-gray-400"># If build fails, purge old Lombok cache:</p>
+                  <p>mvn dependency:purge-local-repository</p>
+                  <p>mvn clean package -DskipTests</p>
+                </div>
+              </div>
+
               <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
                 <h3 className="text-xl font-bold text-white mb-4">⚙️ Prerequisites & Setup</h3>
                 
