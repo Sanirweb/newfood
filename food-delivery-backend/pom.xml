@@ -35,7 +35,7 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- Spring Boot Starter Web MVC (renamed from spring-boot-starter-web in 4.0) -->
+        <!-- Spring Boot Starter Web MVC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc</artifactId>
@@ -74,7 +74,6 @@
         </dependency>
 
         <!-- Lombok 1.18.48 - Required for Java 25 compatibility -->
-        <!-- JDK 25 support was added in Lombok 1.18.40 -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -106,6 +105,11 @@
                     <source>25</source>
                     <target>25</target>
                     <release>25</release>
+                    <!-- CRITICAL: -parameters flag required for Spring Boot 4 / Spring Framework 7 -->
+                    <!-- Without this, @PathVariable and @RequestParam cannot resolve parameter names -->
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                     <!-- Explicitly declare Lombok annotation processor for Java 25 -->
                     <annotationProcessorPaths>
                         <path>

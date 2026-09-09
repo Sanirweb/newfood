@@ -118,6 +118,10 @@ export const pomXml = `<?xml version="1.0" encoding="UTF-8"?>
                     <source>25</source>
                     <target>25</target>
                     <release>25</release>
+                    <!-- CRITICAL: -parameters flag required for Spring Boot 4 -->
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -555,6 +559,7 @@ public class Order {
 // ===== OrderItem.java =====
 package com.fooddelivery.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -572,6 +577,7 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
+    @JsonIgnore  // Prevent infinite recursion during JSON serialization
     private Order order;
 
     @Column(nullable = false)
