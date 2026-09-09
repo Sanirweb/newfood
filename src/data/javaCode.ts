@@ -116,6 +116,13 @@ export const pomXml = `<?xml version="1.0" encoding="UTF-8"?>
                     <source>25</source>
                     <target>25</target>
                     <release>25</release>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>\${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>
@@ -927,23 +934,44 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        MenuCategory foodCategory = new MenuCategory(null, "Main Course", "Delicious main dishes");
-        MenuCategory drinkCategory = new MenuCategory(null, "Beverages", "Refreshing drinks");
-        MenuCategory dessertCategory = new MenuCategory(null, "Desserts", "Sweet treats");
-        
+        // Create categories using no-arg constructor + setters
+        MenuCategory foodCategory = new MenuCategory();
+        foodCategory.setName("Main Course");
+        foodCategory.setDescription("Delicious main dishes");
         foodCategory = categoryRepository.save(foodCategory);
+
+        MenuCategory drinkCategory = new MenuCategory();
+        drinkCategory.setName("Beverages");
+        drinkCategory.setDescription("Refreshing drinks");
         drinkCategory = categoryRepository.save(drinkCategory);
+
+        MenuCategory dessertCategory = new MenuCategory();
+        dessertCategory.setName("Desserts");
+        dessertCategory.setDescription("Sweet treats");
         dessertCategory = categoryRepository.save(dessertCategory);
 
-        menuItemRepository.save(new MenuItem(null, "Margherita Pizza", "Classic tomato and mozzarella", 12.99, MenuItemType.FOOD, foodCategory, true));
-        menuItemRepository.save(new MenuItem(null, "Cheeseburger", "Beef burger with cheese", 10.99, MenuItemType.FOOD, foodCategory, true));
-        menuItemRepository.save(new MenuItem(null, "Spaghetti Carbonara", "Pasta with creamy sauce", 13.99, MenuItemType.FOOD, foodCategory, true));
-        menuItemRepository.save(new MenuItem(null, "Cappuccino", "Espresso with steamed milk", 4.99, MenuItemType.DRINK, drinkCategory, true));
-        menuItemRepository.save(new MenuItem(null, "Green Tea", "Fresh green tea", 3.99, MenuItemType.DRINK, drinkCategory, true));
-        menuItemRepository.save(new MenuItem(null, "Vanilla Ice Cream", "Creamy vanilla ice cream", 5.99, MenuItemType.DESSERT, dessertCategory, true));
-        menuItemRepository.save(new MenuItem(null, "Chocolate Cake", "Rich chocolate cake", 7.99, MenuItemType.DESSERT, dessertCategory, true));
+        // Create menu items using no-arg constructor + setters
+        createMenuItem("Margherita Pizza", "Classic tomato and mozzarella", 12.99, MenuItemType.FOOD, foodCategory);
+        createMenuItem("Cheeseburger", "Beef burger with cheese and vegetables", 10.99, MenuItemType.FOOD, foodCategory);
+        createMenuItem("Spaghetti Carbonara", "Pasta with creamy carbonara sauce", 13.99, MenuItemType.FOOD, foodCategory);
+        createMenuItem("Cappuccino", "Espresso with steamed milk foam", 4.99, MenuItemType.DRINK, drinkCategory);
+        createMenuItem("Green Tea", "Fresh green tea", 3.99, MenuItemType.DRINK, drinkCategory);
+        createMenuItem("Vanilla Ice Cream", "Creamy vanilla ice cream", 5.99, MenuItemType.DESSERT, dessertCategory);
+        createMenuItem("Chocolate Cake", "Rich chocolate layer cake", 7.99, MenuItemType.DESSERT, dessertCategory);
 
-        System.out.println("Database seeded with sample data!");
+        System.out.println("=== Database seeded with sample data! ===");
+    }
+
+    private void createMenuItem(String name, String description, double price, 
+                                 MenuItemType type, MenuCategory category) {
+        MenuItem item = new MenuItem();
+        item.setName(name);
+        item.setDescription(description);
+        item.setPrice(price);
+        item.setType(type);
+        item.setCategory(category);
+        item.setAvailable(true);
+        menuItemRepository.save(item);
     }
 }`;
 
