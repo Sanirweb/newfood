@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { HiMenu, HiX, HiChevronRight, HiCode, HiServer, HiDatabase, HiChip, HiLightningBolt, HiDocumentText } from 'react-icons/hi';
+import { HiMenu, HiX, HiChevronRight, HiChevronDown, HiCode, HiServer, HiDatabase, HiChip, HiLightningBolt, HiDocumentText, HiFolder, HiDocument } from 'react-icons/hi';
 import { Highlight, themes } from 'prism-react-renderer';
 
-type Section = 'overview' | 'architecture' | 'setup' | 'code' | 'api' | 'run';
+type Section = 'overview' | 'structure' | 'architecture' | 'setup' | 'code' | 'api' | 'run';
 
 interface CodeBlockProps {
   code: string;
@@ -51,12 +51,13 @@ function CodeBlock({ code, language, filename }: CodeBlockProps) {
 }
 
 function App() {
-  const [activeSection, setActiveSection] = useState<Section>('overview');
+  const [activeSection, setActiveSection] = useState<Section>('structure');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeCodeFile, setActiveCodeFile] = useState('pom');
 
   const navItems: { id: Section; label: string; icon: React.ReactNode }[] = [
     { id: 'overview', label: 'Overview', icon: <HiDocumentText /> },
+    { id: 'structure', label: 'Folder Structure', icon: <HiFolder /> },
     { id: 'architecture', label: 'Architecture', icon: <HiChip /> },
     { id: 'setup', label: 'Project Setup', icon: <HiServer /> },
     { id: 'code', label: 'Source Code', icon: <HiCode /> },
@@ -68,17 +69,21 @@ function App() {
     { id: 'pom', label: 'pom.xml', filename: 'pom.xml' },
     { id: 'properties', label: 'application.properties', filename: 'src/main/resources/application.properties' },
     { id: 'main', label: 'Main Application', filename: 'FoodDeliveryApplication.java' },
-    { id: 'menu-entity', label: 'Menu Entities', filename: 'menu/entity/MenuItem.java' },
-    { id: 'menu-repo', label: 'Menu Repositories', filename: 'menu/repository/MenuItemRepository.java' },
+    { id: 'shared-enums', label: 'Shared Enums', filename: 'shared/*.java' },
+    { id: 'shared-exceptions', label: 'Exceptions', filename: 'shared/*Exception.java' },
+    { id: 'shared-handler', label: 'Exception Handler', filename: 'shared/GlobalExceptionHandler.java' },
+    { id: 'menu-entity', label: 'Menu Entities', filename: 'menu/entity/*.java' },
+    { id: 'menu-repo', label: 'Menu Repositories', filename: 'menu/repository/*.java' },
     { id: 'menu-service', label: 'Menu Service', filename: 'menu/service/MenuService.java' },
     { id: 'menu-ctrl', label: 'Menu Controller', filename: 'menu/controller/MenuController.java' },
-    { id: 'order-entity', label: 'Order Entities', filename: 'order/entity/Order.java' },
+    { id: 'order-entity', label: 'Order Entities', filename: 'order/entity/*.java' },
+    { id: 'order-repo', label: 'Order Repository', filename: 'order/repository/OrderRepository.java' },
     { id: 'order-service', label: 'Order Service', filename: 'order/service/OrderService.java' },
     { id: 'order-ctrl', label: 'Order Controller', filename: 'order/controller/OrderController.java' },
     { id: 'delivery-entity', label: 'Delivery Entity', filename: 'delivery/entity/Delivery.java' },
+    { id: 'delivery-repo', label: 'Delivery Repository', filename: 'delivery/repository/DeliveryRepository.java' },
     { id: 'delivery-service', label: 'Delivery Service', filename: 'delivery/service/DeliveryService.java' },
     { id: 'delivery-ctrl', label: 'Delivery Controller', filename: 'delivery/controller/DeliveryController.java' },
-    { id: 'exception', label: 'Exception Handler', filename: 'common/exception/GlobalExceptionHandler.java' },
     { id: 'seeder', label: 'Data Seeder', filename: 'config/DataSeeder.java' },
     { id: 'swagger', label: 'Swagger Config', filename: 'config/SwaggerConfig.java' },
   ];
@@ -148,7 +153,7 @@ function App() {
           </h2>
           <div className="flex items-center gap-2">
             <span className="hidden sm:inline text-xs bg-green-500/20 text-green-400 px-3 py-1 rounded-full border border-green-500/30">
-              ● Production Ready
+              ● All Files Included
             </span>
           </div>
         </header>
@@ -162,10 +167,8 @@ function App() {
                   🍕 Food Delivery Modular Monolith
                 </h3>
                 <p className="text-gray-300 leading-relaxed">
-                  A high-performance, single-port Spring Boot application consolidating three previously separate 
-                  microservices (Menu, Order, Delivery) into a modular monolith architecture. Built with Java 21 
-                  and Spring Boot 3.3+, featuring clear package-based domain boundaries, in-memory H2 database, 
-                  and comprehensive REST APIs.
+                  A complete food delivery backend system built as a modular monolith using Java 21, Spring Boot 3.3+, 
+                  and H2 in-memory database. All source files are included in the <code className="bg-gray-700 px-2 py-0.5 rounded">food-delivery-backend/</code> directory.
                 </p>
               </div>
 
@@ -187,16 +190,16 @@ function App() {
                 <h4 className="text-lg font-semibold text-white mb-4">✨ Key Features</h4>
                 <div className="grid md:grid-cols-2 gap-3">
                   {[
+                    'Complete source code included',
                     'Package-based modular boundaries',
-                    'Direct in-memory service injection (no HTTP)',
-                    'Global exception handling with @ControllerAdvice',
+                    'Direct in-memory service injection',
+                    'Global exception handling',
                     'Database seeder for instant testing',
                     'Spring Boot Actuator health checks',
-                    'Interactive Swagger UI documentation',
-                    'Bean validation with custom error messages',
-                    'Status transition validation (state machines)',
-                    'H2 in-memory database (zero config)',
-                    'Lombok for boilerplate reduction',
+                    'Interactive Swagger UI',
+                    'Bean validation',
+                    'Status transition validation',
+                    'H2 in-memory database',
                   ].map((feature) => (
                     <div key={feature} className="flex items-center gap-2 text-sm text-gray-300">
                       <span className="text-green-400">✓</span>
@@ -205,10 +208,96 @@ function App() {
                   ))}
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* FOLDER STRUCTURE */}
+          {activeSection === 'structure' && (
+            <div className="space-y-8">
+              <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-white mb-4">📁 Complete Project Structure</h3>
+                <p className="text-gray-400 text-sm mb-6">
+                  All files are located in the <code className="bg-gray-700 px-2 py-0.5 rounded text-orange-400">food-delivery-backend/</code> directory.
+                </p>
+
+                <div className="bg-gray-900 rounded-lg p-6 border border-gray-600 font-mono text-sm">
+                  <div className="space-y-1 text-gray-300">
+                    <div className="text-orange-400 font-bold">food-delivery-backend/</div>
+                    <div className="ml-4">├── <span className="text-blue-400">pom.xml</span></div>
+                    <div className="ml-4">├── <span className="text-blue-400">README.md</span></div>
+                    <div className="ml-4">└── <span className="text-yellow-400">src/</span></div>
+                    <div className="ml-8">└── <span className="text-yellow-400">main/</span></div>
+                    <div className="ml-12">├── <span className="text-yellow-400">java/</span></div>
+                    <div className="ml-16">└── <span className="text-yellow-400">com/fooddelivery/</span></div>
+                    <div className="ml-20">├── <span className="text-green-400">FoodDeliveryApplication.java</span></div>
+                    <div className="ml-20">├── <span className="text-yellow-400">shared/</span></div>
+                    <div className="ml-24">├── <span className="text-green-400">OrderStatus.java</span></div>
+                    <div className="ml-24">├── <span className="text-green-400">DeliveryStatus.java</span></div>
+                    <div className="ml-24">├── <span className="text-green-400">MenuItemType.java</span></div>
+                    <div className="ml-24">├── <span className="text-green-400">ResourceNotFoundException.java</span></div>
+                    <div className="ml-24">├── <span className="text-green-400">ValidationException.java</span></div>
+                    <div className="ml-24">└── <span className="text-green-400">GlobalExceptionHandler.java</span></div>
+                    <div className="ml-20">├── <span className="text-yellow-400">menu/</span></div>
+                    <div className="ml-24">├── <span className="text-yellow-400">entity/</span></div>
+                    <div className="ml-28">├── <span className="text-green-400">MenuCategory.java</span></div>
+                    <div className="ml-28">└── <span className="text-green-400">MenuItem.java</span></div>
+                    <div className="ml-24">├── <span className="text-yellow-400">repository/</span></div>
+                    <div className="ml-28">├── <span className="text-green-400">MenuCategoryRepository.java</span></div>
+                    <div className="ml-28">└── <span className="text-green-400">MenuItemRepository.java</span></div>
+                    <div className="ml-24">├── <span className="text-yellow-400">service/</span></div>
+                    <div className="ml-28">└── <span className="text-green-400">MenuService.java</span></div>
+                    <div className="ml-24">└── <span className="text-yellow-400">controller/</span></div>
+                    <div className="ml-28">└── <span className="text-green-400">MenuController.java</span></div>
+                    <div className="ml-20">├── <span className="text-yellow-400">order/</span></div>
+                    <div className="ml-24">├── <span className="text-yellow-400">entity/</span></div>
+                    <div className="ml-28">├── <span className="text-green-400">Order.java</span></div>
+                    <div className="ml-28">└── <span className="text-green-400">OrderItem.java</span></div>
+                    <div className="ml-24">├── <span className="text-yellow-400">repository/</span></div>
+                    <div className="ml-28">└── <span className="text-green-400">OrderRepository.java</span></div>
+                    <div className="ml-24">├── <span className="text-yellow-400">service/</span></div>
+                    <div className="ml-28">└── <span className="text-green-400">OrderService.java</span></div>
+                    <div className="ml-24">└── <span className="text-yellow-400">controller/</span></div>
+                    <div className="ml-28">└── <span className="text-green-400">OrderController.java</span></div>
+                    <div className="ml-20">├── <span className="text-yellow-400">delivery/</span></div>
+                    <div className="ml-24">├── <span className="text-yellow-400">entity/</span></div>
+                    <div className="ml-28">└── <span className="text-green-400">Delivery.java</span></div>
+                    <div className="ml-24">├── <span className="text-yellow-400">repository/</span></div>
+                    <div className="ml-28">└── <span className="text-green-400">DeliveryRepository.java</span></div>
+                    <div className="ml-24">├── <span className="text-yellow-400">service/</span></div>
+                    <div className="ml-28">└── <span className="text-green-400">DeliveryService.java</span></div>
+                    <div className="ml-24">└── <span className="text-yellow-400">controller/</span></div>
+                    <div className="ml-28">└── <span className="text-green-400">DeliveryController.java</span></div>
+                    <div className="ml-20">└── <span className="text-yellow-400">config/</span></div>
+                    <div className="ml-24">├── <span className="text-green-400">DataSeeder.java</span></div>
+                    <div className="ml-24">└── <span className="text-green-400">SwaggerConfig.java</span></div>
+                    <div className="ml-12">└── <span className="text-yellow-400">resources/</span></div>
+                    <div className="ml-16">└── <span className="text-blue-400">application.properties</span></div>
+                  </div>
+                </div>
+
+                <div className="mt-6 bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+                  <p className="text-sm text-blue-300">
+                    <strong>Legend:</strong> <span className="text-yellow-400">Yellow</span> = directories, <span className="text-green-400">Green</span> = Java files, <span className="text-blue-400">Blue</span> = configuration files
+                  </p>
+                </div>
+              </div>
 
               <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
-                <h4 className="text-lg font-semibold text-white mb-4">📁 Project Structure</h4>
-                <CodeBlock code={projectStructureCode} language="bash" filename="Project Structure" />
+                <h4 className="text-lg font-semibold text-white mb-4">📊 File Statistics</h4>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-600 text-center">
+                    <div className="text-3xl font-bold text-orange-400">22</div>
+                    <div className="text-sm text-gray-400 mt-1">Java Files</div>
+                  </div>
+                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-600 text-center">
+                    <div className="text-3xl font-bold text-blue-400">3</div>
+                    <div className="text-sm text-gray-400 mt-1">Domains</div>
+                  </div>
+                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-600 text-center">
+                    <div className="text-3xl font-bold text-green-400">10</div>
+                    <div className="text-sm text-gray-400 mt-1">API Endpoints</div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -219,13 +308,10 @@ function App() {
               <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
                 <h3 className="text-xl font-bold text-white mb-4">🏗️ Modular Monolith Architecture</h3>
                 <p className="text-gray-300 mb-6">
-                  Unlike a traditional monolith, this architecture maintains strict domain boundaries through 
-                  package segregation. Each module is self-contained with its own entities, repositories, services, 
-                  and controllers. Cross-module communication happens through direct Java service injection — 
-                  never through HTTP calls.
+                  The application maintains strict domain boundaries through package segregation. Each module is 
+                  self-contained with its own entities, repositories, services, and controllers.
                 </p>
 
-                {/* Architecture Diagram */}
                 <div className="bg-gray-900 rounded-lg p-6 border border-gray-600">
                   <div className="text-center mb-6">
                     <div className="inline-block bg-orange-500/20 border border-orange-500/30 rounded-lg px-6 py-3">
@@ -242,8 +328,7 @@ function App() {
                         <p className="text-gray-500">├─ controller/</p>
                         <p className="text-gray-500">├─ service/</p>
                         <p className="text-gray-500">├─ repository/</p>
-                        <p className="text-gray-500">├─ entity/</p>
-                        <p className="text-gray-500">└─ dto/</p>
+                        <p className="text-gray-500">└─ entity/</p>
                       </div>
                     </div>
 
@@ -255,8 +340,7 @@ function App() {
                         <p className="text-gray-500">├─ controller/</p>
                         <p className="text-gray-500">├─ service/</p>
                         <p className="text-gray-500">├─ repository/</p>
-                        <p className="text-gray-500">├─ entity/</p>
-                        <p className="text-gray-500">└─ dto/</p>
+                        <p className="text-gray-500">└─ entity/</p>
                       </div>
                     </div>
 
@@ -268,83 +352,26 @@ function App() {
                         <p className="text-gray-500">├─ controller/</p>
                         <p className="text-gray-500">├─ service/</p>
                         <p className="text-gray-500">├─ repository/</p>
-                        <p className="text-gray-500">├─ entity/</p>
-                        <p className="text-gray-500">└─ dto/</p>
+                        <p className="text-gray-500">└─ entity/</p>
                       </div>
                     </div>
                   </div>
 
-                  {/* Cross-module arrows */}
                   <div className="bg-gray-800 rounded-lg p-4 border border-gray-600">
-                    <h6 className="text-sm font-bold text-yellow-400 mb-3">⚡ Cross-Module Communication (Direct Injection)</h6>
+                    <h6 className="text-sm font-bold text-yellow-400 mb-3">⚡ Cross-Module Communication</h6>
                     <div className="space-y-2 text-sm">
                       <div className="flex items-center gap-2 text-gray-300">
                         <span className="text-green-400">OrderService</span>
-                        <span className="text-gray-500">→ injects →</span>
+                        <span className="text-gray-500">→</span>
                         <span className="text-blue-400">MenuService</span>
-                        <span className="text-gray-500">(validates item existence)</span>
+                        <span className="text-gray-500">(validates items)</span>
                       </div>
                       <div className="flex items-center gap-2 text-gray-300">
                         <span className="text-purple-400">DeliveryService</span>
-                        <span className="text-gray-500">→ injects →</span>
+                        <span className="text-gray-500">→</span>
                         <span className="text-green-400">OrderService</span>
-                        <span className="text-gray-500">(validates order, updates status)</span>
+                        <span className="text-gray-500">(updates status)</span>
                       </div>
-                    </div>
-                  </div>
-
-                  {/* Infrastructure */}
-                  <div className="mt-6 grid md:grid-cols-2 gap-4">
-                    <div className="bg-gray-800 rounded-lg p-4 border border-gray-600 text-center">
-                      <span className="text-xl">🗄️</span>
-                      <p className="text-sm text-gray-300 mt-2">H2 In-Memory Database</p>
-                      <p className="text-xs text-gray-500">Spring Data JPA</p>
-                    </div>
-                    <div className="bg-gray-800 rounded-lg p-4 border border-gray-600 text-center">
-                      <span className="text-xl">📊</span>
-                      <p className="text-sm text-gray-300 mt-2">Actuator + Swagger UI</p>
-                      <p className="text-xs text-gray-500">Health / Metrics / Docs</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
-                <h4 className="text-lg font-semibold text-white mb-4">🔄 Data Flow Example: Creating an Order</h4>
-                <div className="space-y-3">
-                  {[
-                    { step: 1, desc: 'Client sends POST /api/v1/orders with item IDs', color: 'orange' },
-                    { step: 2, desc: 'OrderController delegates to OrderService', color: 'orange' },
-                    { step: 3, desc: 'OrderService calls MenuService.getItemsByIds() — validates items exist', color: 'blue' },
-                    { step: 4, desc: 'OrderService calculates total, creates Order + OrderItems', color: 'green' },
-                    { step: 5, desc: 'OrderRepository saves to H2 database', color: 'green' },
-                    { step: 6, desc: 'Response returned to client with full order details', color: 'orange' },
-                  ].map((item) => (
-                    <div key={item.step} className="flex items-center gap-3">
-                      <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold bg-${item.color}-500/20 text-${item.color}-400 border border-${item.color}-500/30`}>
-                        {item.step}
-                      </span>
-                      <span className="text-sm text-gray-300">{item.desc}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
-                <h4 className="text-lg font-semibold text-white mb-4">📊 Status State Machines</h4>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h5 className="text-sm font-bold text-green-400 mb-3">Order Status Flow:</h5>
-                    <div className="bg-gray-900 rounded-lg p-4 font-mono text-xs text-gray-300 space-y-1">
-                      <p>PENDING → CONFIRMED → DELIVERING → COMPLETED</p>
-                      <p>PENDING → CANCELLED</p>
-                      <p>CONFIRMED → CANCELLED</p>
-                    </div>
-                  </div>
-                  <div>
-                    <h5 className="text-sm font-bold text-purple-400 mb-3">Delivery Status Flow:</h5>
-                    <div className="bg-gray-900 rounded-lg p-4 font-mono text-xs text-gray-300 space-y-1">
-                      <p>ASSIGNED → PICKED_UP → DELIVERED</p>
                     </div>
                   </div>
                 </div>
@@ -362,63 +389,44 @@ function App() {
                   <div>
                     <h4 className="text-md font-semibold text-orange-400 mb-2">1. Install JDK 21</h4>
                     <div className="bg-gray-900 rounded-lg p-4 text-sm text-gray-300 space-y-2">
-                      <p className="text-gray-400"># Using SDKMAN (recommended):</p>
-                      <p>curl -s "https://get.sdkman.io" | bash</p>
-                      <p>sdk install java 21-open</p>
-                      <p>sdk use java 21-open</p>
-                      <p className="mt-3 text-gray-400"># Or download from:</p>
-                      <p>https://adoptium.net/temurin/releases/ (JDK 21)</p>
-                      <p className="mt-3 text-gray-400"># Verify installation:</p>
-                      <p>java --version</p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="text-md font-semibold text-orange-400 mb-2">2. Install Apache Maven 3.9+</h4>
-                    <div className="bg-gray-900 rounded-lg p-4 text-sm text-gray-300 space-y-2">
-                      <p className="text-gray-400"># Using SDKMAN:</p>
-                      <p>sdk install maven</p>
-                      <p className="mt-3 text-gray-400"># Or using Homebrew (macOS):</p>
-                      <p>brew install maven</p>
-                      <p className="mt-3 text-gray-400"># Or using apt (Ubuntu/Debian):</p>
-                      <p>sudo apt install maven</p>
+                      <p className="text-gray-400"># Ubuntu/Debian:</p>
+                      <p>sudo apt update && sudo apt install openjdk-21-jdk</p>
+                      <p className="mt-3 text-gray-400"># macOS (Homebrew):</p>
+                      <p>brew install openjdk@21</p>
                       <p className="mt-3 text-gray-400"># Verify:</p>
-                      <p>mvn --version</p>
+                      <p>java -version</p>
                     </div>
                   </div>
 
                   <div>
-                    <h4 className="text-md font-semibold text-orange-400 mb-2">3. IDE Setup (Optional but Recommended)</h4>
+                    <h4 className="text-md font-semibold text-orange-400 mb-2">2. Install Maven</h4>
                     <div className="bg-gray-900 rounded-lg p-4 text-sm text-gray-300 space-y-2">
-                      <p className="text-gray-400"># Recommended: IntelliJ IDEA 2024.1+ (Community Edition is free)</p>
-                      <p className="text-gray-400"># Download: https://www.jetbrains.com/idea/download/</p>
-                      <p className="mt-3 text-gray-400"># Ensure these plugins are installed:</p>
-                      <p>• Lombok Plugin (built-in since 2020.3)</p>
-                      <p>• Enable annotation processing in Settings → Build → Compiler → Annotations</p>
+                      <p className="text-gray-400"># Ubuntu/Debian:</p>
+                      <p>sudo apt install maven</p>
+                      <p className="mt-3 text-gray-400"># macOS:</p>
+                      <p>brew install maven</p>
+                      <p className="mt-3 text-gray-400"># Verify:</p>
+                      <p>mvn -version</p>
                     </div>
                   </div>
 
                   <div>
-                    <h4 className="text-md font-semibold text-orange-400 mb-2">4. Create Project Directory</h4>
+                    <h4 className="text-md font-semibold text-orange-400 mb-2">3. Navigate to Project</h4>
                     <div className="bg-gray-900 rounded-lg p-4 text-sm text-gray-300 space-y-2">
-                      <p>mkdir food-delivery-modular-monolith</p>
-                      <p>cd food-delivery-modular-monolith</p>
-                      <p>mkdir -p src/main/java/com/fooddelivery</p>
-                      <p>mkdir -p src/main/resources</p>
-                      <p>mkdir -p src/test/java/com/fooddelivery</p>
+                      <p>cd food-delivery-backend</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
-                <h4 className="text-lg font-semibold text-white mb-4">📦 pom.xml — Complete Dependencies</h4>
+                <h4 className="text-lg font-semibold text-white mb-4">📦 pom.xml</h4>
                 <CodeBlock code={pomXmlCode} language="xml" filename="pom.xml" />
               </div>
 
               <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
                 <h4 className="text-lg font-semibold text-white mb-4">⚙️ application.properties</h4>
-                <CodeBlock code={applicationPropertiesCode} language="properties" filename="src/main/resources/application.properties" />
+                <CodeBlock code={applicationPropertiesCode} language="properties" filename="application.properties" />
               </div>
             </div>
           )}
@@ -429,11 +437,9 @@ function App() {
               <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
                 <h3 className="text-xl font-bold text-white mb-4">💻 Source Code</h3>
                 <p className="text-gray-400 text-sm mb-6">
-                  Select a file from the list below to view its complete source code. All imports are explicit 
-                  and the code compiles without missing symbols.
+                  All Java source files are included. Select a file to view its complete code.
                 </p>
 
-                {/* File selector */}
                 <div className="flex flex-wrap gap-2 mb-6">
                   {codeFiles.map((file) => (
                     <button
@@ -450,21 +456,24 @@ function App() {
                   ))}
                 </div>
 
-                {/* Code display */}
                 {activeCodeFile === 'pom' && <CodeBlock code={pomXmlCode} language="xml" filename="pom.xml" />}
                 {activeCodeFile === 'properties' && <CodeBlock code={applicationPropertiesCode} language="properties" filename="application.properties" />}
                 {activeCodeFile === 'main' && <CodeBlock code={mainAppCode} language="java" filename="FoodDeliveryApplication.java" />}
-                {activeCodeFile === 'menu-entity' && <CodeBlock code={menuItemEntityCode} language="java" filename="menu/entity/MenuItem.java" />}
-                {activeCodeFile === 'menu-repo' && <CodeBlock code={menuItemRepoCode} language="java" filename="menu/repository/MenuItemRepository.java" />}
+                {activeCodeFile === 'shared-enums' && <CodeBlock code={sharedEnumsCode} language="java" filename="shared/OrderStatus.java, DeliveryStatus.java, MenuItemType.java" />}
+                {activeCodeFile === 'shared-exceptions' && <CodeBlock code={sharedExceptionsCode} language="java" filename="shared/ResourceNotFoundException.java, ValidationException.java" />}
+                {activeCodeFile === 'shared-handler' && <CodeBlock code={exceptionHandlerCode} language="java" filename="shared/GlobalExceptionHandler.java" />}
+                {activeCodeFile === 'menu-entity' && <CodeBlock code={menuEntityCode} language="java" filename="menu/entity/MenuCategory.java, MenuItem.java" />}
+                {activeCodeFile === 'menu-repo' && <CodeBlock code={menuRepoCode} language="java" filename="menu/repository/MenuItemRepository.java, MenuCategoryRepository.java" />}
                 {activeCodeFile === 'menu-service' && <CodeBlock code={menuServiceCode} language="java" filename="menu/service/MenuService.java" />}
                 {activeCodeFile === 'menu-ctrl' && <CodeBlock code={menuControllerCode} language="java" filename="menu/controller/MenuController.java" />}
-                {activeCodeFile === 'order-entity' && <CodeBlock code={orderEntityCode} language="java" filename="order/entity/Order.java" />}
+                {activeCodeFile === 'order-entity' && <CodeBlock code={orderEntityCode} language="java" filename="order/entity/Order.java, OrderItem.java" />}
+                {activeCodeFile === 'order-repo' && <CodeBlock code={orderRepoCode} language="java" filename="order/repository/OrderRepository.java" />}
                 {activeCodeFile === 'order-service' && <CodeBlock code={orderServiceCode} language="java" filename="order/service/OrderService.java" />}
                 {activeCodeFile === 'order-ctrl' && <CodeBlock code={orderControllerCode} language="java" filename="order/controller/OrderController.java" />}
                 {activeCodeFile === 'delivery-entity' && <CodeBlock code={deliveryEntityCode} language="java" filename="delivery/entity/Delivery.java" />}
+                {activeCodeFile === 'delivery-repo' && <CodeBlock code={deliveryRepoCode} language="java" filename="delivery/repository/DeliveryRepository.java" />}
                 {activeCodeFile === 'delivery-service' && <CodeBlock code={deliveryServiceCode} language="java" filename="delivery/service/DeliveryService.java" />}
                 {activeCodeFile === 'delivery-ctrl' && <CodeBlock code={deliveryControllerCode} language="java" filename="delivery/controller/DeliveryController.java" />}
-                {activeCodeFile === 'exception' && <CodeBlock code={exceptionHandlerCode} language="java" filename="common/exception/GlobalExceptionHandler.java" />}
                 {activeCodeFile === 'seeder' && <CodeBlock code={dataSeederCode} language="java" filename="config/DataSeeder.java" />}
                 {activeCodeFile === 'swagger' && <CodeBlock code={swaggerConfigCode} language="java" filename="config/SwaggerConfig.java" />}
               </div>
@@ -475,112 +484,46 @@ function App() {
           {activeSection === 'api' && (
             <div className="space-y-8">
               <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
-                <h3 className="text-xl font-bold text-white mb-4">📡 API Endpoints Reference</h3>
+                <h3 className="text-xl font-bold text-white mb-4">📡 API Endpoints</h3>
                 <p className="text-gray-400 text-sm mb-6">
-                  All endpoints are prefixed with <code className="bg-gray-700 px-2 py-0.5 rounded text-orange-400">/api/v1</code>. 
-                  Interactive documentation available at <code className="bg-gray-700 px-2 py-0.5 rounded text-green-400">http://localhost:8080/swagger-ui/index.html</code>
+                  All endpoints prefixed with <code className="bg-gray-700 px-2 py-0.5 rounded text-orange-400">/api/v1</code>
                 </p>
 
-                {/* Menu APIs */}
                 <div className="mb-8">
-                  <h4 className="text-lg font-semibold text-blue-400 mb-3 flex items-center gap-2">
-                    <span>📋</span> Menu Domain APIs
-                  </h4>
+                  <h4 className="text-lg font-semibold text-blue-400 mb-3">📋 Menu APIs</h4>
                   <div className="space-y-3">
-                    <ApiEndpoint method="GET" path="/api/v1/menus" desc="Retrieve all menus and categories" />
-                    <ApiEndpoint method="GET" path="/api/v1/items" desc="Retrieve all menu items (optional ?category= filter)" />
-                    <ApiEndpoint method="POST" path="/api/v1/items" desc="Add a new menu item" body={`{
-  "name": "New Pizza",
-  "description": "Delicious pepperoni pizza",
-  "price": 14.99,
-  "category": "Main Course",
-  "available": true
-}`} />
+                    <ApiEndpoint method="GET" path="/api/v1/menus" desc="Get all categories" />
+                    <ApiEndpoint method="GET" path="/api/v1/items" desc="Get all menu items" />
+                    <ApiEndpoint method="POST" path="/api/v1/items" desc="Create menu item" body={`{\n  "name": "Pizza",\n  "price": 12.99,\n  "type": "FOOD"\n}`} />
                   </div>
                 </div>
 
-                {/* Order APIs */}
                 <div className="mb-8">
-                  <h4 className="text-lg font-semibold text-green-400 mb-3 flex items-center gap-2">
-                    <span>🛒</span> Order Domain APIs
-                  </h4>
+                  <h4 className="text-lg font-semibold text-green-400 mb-3">🛒 Order APIs</h4>
                   <div className="space-y-3">
-                    <ApiEndpoint method="POST" path="/api/v1/orders" desc="Create a new order" body={`{
-  "customerName": "Jane Smith",
-  "customerPhone": "+1-555-0456",
-  "deliveryAddress": "456 Oak Avenue, Brooklyn, NY 11201",
-  "items": [
-    { "menuItemId": 4, "quantity": 2 },
-    { "menuItemId": 10, "quantity": 1 }
-  ]
-}`} />
-                    <ApiEndpoint method="GET" path="/api/v1/orders/{id}" desc="Get order details by ID" />
-                    <ApiEndpoint method="PUT" path="/api/v1/orders/{id}/status" desc="Update order status" body={`{
-  "status": "CONFIRMED"
-}
-
-// Valid transitions:
-// PENDING → CONFIRMED | CANCELLED
-// CONFIRMED → DELIVERING | CANCELLED
-// DELIVERING → COMPLETED`} />
+                    <ApiEndpoint method="POST" path="/api/v1/orders" desc="Create order" body={`{\n  "customerName": "John",\n  "customerAddress": "123 Main St",\n  "customerPhone": "555-1234",\n  "orderItems": [{\n    "menuItemId": 1,\n    "menuItemName": "Pizza",\n    "quantity": 2,\n    "unitPrice": 12.99\n  }]\n}`} />
+                    <ApiEndpoint method="GET" path="/api/v1/orders/{id}" desc="Get order" />
+                    <ApiEndpoint method="PUT" path="/api/v1/orders/{id}/status" desc="Update status" />
                   </div>
                 </div>
 
-                {/* Delivery APIs */}
                 <div className="mb-8">
-                  <h4 className="text-lg font-semibold text-purple-400 mb-3 flex items-center gap-2">
-                    <span>🚗</span> Delivery Domain APIs
-                  </h4>
+                  <h4 className="text-lg font-semibold text-purple-400 mb-3">🚗 Delivery APIs</h4>
                   <div className="space-y-3">
-                    <ApiEndpoint method="POST" path="/api/v1/deliveries" desc="Assign a driver to an order" body={`{
-  "orderId": 1,
-  "driverName": "Alex Rivera",
-  "driverPhone": "+1-555-7890"
-}`} />
-                    <ApiEndpoint method="GET" path="/api/v1/deliveries/order/{orderId}" desc="Get delivery tracking for an order" />
-                    <ApiEndpoint method="PUT" path="/api/v1/deliveries/{id}/status" desc="Update delivery status" body={`{
-  "status": "PICKED_UP"
-}
-
-// Valid transitions:
-// ASSIGNED → PICKED_UP
-// PICKED_UP → DELIVERED`} />
+                    <ApiEndpoint method="POST" path="/api/v1/deliveries" desc="Assign driver" body={`{\n  "orderId": 1,\n  "driverName": "Mike",\n  "driverPhone": "555-5678",\n  "deliveryAddress": "123 Main St"\n}`} />
+                    <ApiEndpoint method="GET" path="/api/v1/deliveries/order/{orderId}" desc="Get deliveries" />
+                    <ApiEndpoint method="PUT" path="/api/v1/deliveries/{id}/status" desc="Update status" />
                   </div>
                 </div>
 
-                {/* Actuator & Swagger */}
                 <div>
-                  <h4 className="text-lg font-semibold text-yellow-400 mb-3 flex items-center gap-2">
-                    <span>🔧</span> Infrastructure Endpoints
-                  </h4>
+                  <h4 className="text-lg font-semibold text-yellow-400 mb-3">🔧 Infrastructure</h4>
                   <div className="space-y-3">
-                    <ApiEndpoint method="GET" path="/actuator/health" desc="Health check endpoint" />
-                    <ApiEndpoint method="GET" path="/actuator/metrics" desc="Application metrics" />
-                    <ApiEndpoint method="GET" path="/swagger-ui/index.html" desc="Interactive Swagger UI" />
-                    <ApiEndpoint method="GET" path="/h2-console" desc="H2 Database Console" />
+                    <ApiEndpoint method="GET" path="/actuator/health" desc="Health check" />
+                    <ApiEndpoint method="GET" path="/swagger-ui.html" desc="Swagger UI" />
+                    <ApiEndpoint method="GET" path="/h2-console" desc="H2 Console" />
                   </div>
                 </div>
-              </div>
-
-              {/* Error Response Format */}
-              <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
-                <h4 className="text-lg font-semibold text-white mb-4">❌ Error Response Format</h4>
-                <CodeBlock code={`{
-  "timestamp": "2024-10-15T14:30:00",
-  "status": 400,
-  "message": "Menu item not found with id: 999"
-}
-
-// Validation errors include field-level details:
-{
-  "timestamp": "2024-10-15T14:30:00",
-  "status": 400,
-  "message": "Validation failed",
-  "errors": {
-    "customerName": "Customer name is required",
-    "deliveryAddress": "Delivery address is required"
-  }
-}`} language="json" filename="Error Response Examples" />
               </div>
             </div>
           )}
@@ -589,128 +532,38 @@ function App() {
           {activeSection === 'run' && (
             <div className="space-y-8">
               <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
-                <h3 className="text-xl font-bold text-white mb-4">🚀 Build & Run Instructions</h3>
+                <h3 className="text-xl font-bold text-white mb-4">🚀 Build & Run</h3>
                 
                 <div className="space-y-6">
                   <div>
-                    <h4 className="text-md font-semibold text-green-400 mb-2">Step 1: Build the Project</h4>
-                    <CodeBlock code={`# Navigate to project root
-cd food-delivery-modular-monolith
-
-# Build with Maven (skip tests for faster build)
-mvn clean package -DskipTests
-
-# Or build with tests
-mvn clean package`} language="bash" filename="Terminal" />
+                    <h4 className="text-md font-semibold text-green-400 mb-2">Build</h4>
+                    <CodeBlock code={`cd food-delivery-backend\nmvn clean install`} language="bash" filename="Terminal" />
                   </div>
 
                   <div>
-                    <h4 className="text-md font-semibold text-green-400 mb-2">Step 2: Run the Application</h4>
-                    <CodeBlock code={`# Option 1: Run with Maven
-mvn spring-boot:run
-
-# Option 2: Run the JAR directly
-java -jar target/food-delivery-modular-monolith-1.0.0.jar
-
-# Option 3: Run from IDE
-# Right-click FoodDeliveryApplication.java → Run`} language="bash" filename="Terminal" />
+                    <h4 className="text-md font-semibold text-green-400 mb-2">Run</h4>
+                    <CodeBlock code={`# Option 1: Maven\nmvn spring-boot:run\n\n# Option 2: JAR\njava -jar target/food-delivery-backend-1.0.0.jar`} language="bash" filename="Terminal" />
                   </div>
 
                   <div>
-                    <h4 className="text-md font-semibold text-green-400 mb-2">Step 3: Verify the Application is Running</h4>
-                    <CodeBlock code={`# Health check
-curl http://localhost:8080/actuator/health
-
-# Expected response:
-# {"status":"UP","components":{...}}
-
-# Check menu items
-curl http://localhost:8080/api/v1/items
-
-# Check menus/categories
-curl http://localhost:8080/api/v1/menus`} language="bash" filename="Terminal" />
+                    <h4 className="text-md font-semibold text-green-400 mb-2">Verify</h4>
+                    <CodeBlock code={`curl http://localhost:8080/actuator/health\ncurl http://localhost:8080/api/v1/items`} language="bash" filename="Terminal" />
                   </div>
                 </div>
               </div>
 
               <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
-                <h3 className="text-xl font-bold text-white mb-4">🧪 Testing the APIs</h3>
+                <h3 className="text-xl font-bold text-white mb-4">🧪 Test APIs</h3>
                 
                 <div className="space-y-6">
                   <div>
-                    <h4 className="text-md font-semibold text-blue-400 mb-2">Test 1: Get All Menu Items</h4>
-                    <CodeBlock code={`curl -X GET http://localhost:8080/api/v1/items \\
-  -H "Content-Type: application/json"
-
-# Response: Array of MenuItem objects with pre-seeded data`} language="bash" filename="Terminal" />
+                    <h4 className="text-md font-semibold text-blue-400 mb-2">Create Order</h4>
+                    <CodeBlock code={`curl -X POST http://localhost:8080/api/v1/orders \\\n  -H "Content-Type: application/json" \\\n  -d '{\n    "customerName": "Jane Smith",\n    "customerAddress": "456 Oak Ave",\n    "customerPhone": "555-9876",\n    "orderItems": [\n      {"menuItemId": 1, "menuItemName": "Pizza", "quantity": 2, "unitPrice": 12.99}\n    ]\n  }'`} language="bash" filename="Terminal" />
                   </div>
 
                   <div>
-                    <h4 className="text-md font-semibold text-blue-400 mb-2">Test 2: Create a New Order</h4>
-                    <CodeBlock code={`curl -X POST http://localhost:8080/api/v1/orders \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "customerName": "Jane Smith",
-    "customerPhone": "+1-555-0456",
-    "deliveryAddress": "456 Oak Avenue, Brooklyn, NY 11201",
-    "items": [
-      {"menuItemId": 4, "quantity": 2},
-      {"menuItemId": 10, "quantity": 1}
-    ]
-  }'
-
-# Response: Order object with calculated total amount`} language="bash" filename="Terminal" />
-                  </div>
-
-                  <div>
-                    <h4 className="text-md font-semibold text-blue-400 mb-2">Test 3: Get Order Details</h4>
-                    <CodeBlock code={`curl -X GET http://localhost:8080/api/v1/orders/1 \\
-  -H "Content-Type: application/json"
-
-# Response: Full order with items, status, and total`} language="bash" filename="Terminal" />
-                  </div>
-
-                  <div>
-                    <h4 className="text-md font-semibold text-blue-400 mb-2">Test 4: Update Order Status</h4>
-                    <CodeBlock code={`curl -X PUT http://localhost:8080/api/v1/orders/1/status \\
-  -H "Content-Type: application/json" \\
-  -d '{"status": "CONFIRMED"}'
-
-# Response: Updated order with new status`} language="bash" filename="Terminal" />
-                  </div>
-
-                  <div>
-                    <h4 className="text-md font-semibold text-blue-400 mb-2">Test 5: Assign a Driver</h4>
-                    <CodeBlock code={`curl -X POST http://localhost:8080/api/v1/deliveries \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "orderId": 1,
-    "driverName": "Alex Rivera",
-    "driverPhone": "+1-555-7890"
-  }'
-
-# Response: Delivery object with ASSIGNED status`} language="bash" filename="Terminal" />
-                  </div>
-
-                  <div>
-                    <h4 className="text-md font-semibold text-blue-400 mb-2">Test 6: Track Delivery</h4>
-                    <CodeBlock code={`curl -X GET http://localhost:8080/api/v1/deliveries/order/1 \\
-  -H "Content-Type: application/json"
-
-# Response: Delivery details with driver info and status`} language="bash" filename="Terminal" />
-                  </div>
-
-                  <div>
-                    <h4 className="text-md font-semibold text-blue-400 mb-2">Test 7: Update Delivery Status</h4>
-                    <CodeBlock code={`# Mark as picked up
-curl -X PUT http://localhost:8080/api/v1/deliveries/1/status \\
-  -H "Content-Type: application/json" \\
-  -d '{"status": "PICKED_UP"}'
-
-# Mark as delivered (also updates order to COMPLETED)
-curl -X PUT http://localhost:8080/api/v1/deliveries/1/status \\
-  -H "Content-Type: application/json" \\
-  -d '{"status": "DELIVERED"}'`} language="bash" filename="Terminal" />
+                    <h4 className="text-md font-semibold text-blue-400 mb-2">Assign Driver</h4>
+                    <CodeBlock code={`curl -X POST http://localhost:8080/api/v1/deliveries \\\n  -H "Content-Type: application/json" \\\n  -d '{\n    "orderId": 1,\n    "driverName": "Alex",\n    "driverPhone": "555-7890",\n    "deliveryAddress": "456 Oak Ave"\n  }'`} language="bash" filename="Terminal" />
                   </div>
                 </div>
               </div>
@@ -719,39 +572,16 @@ curl -X PUT http://localhost:8080/api/v1/deliveries/1/status \\
                 <h3 className="text-xl font-bold text-white mb-4">🌐 Access Points</h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   {[
-                    { name: 'REST API', url: 'http://localhost:8080/api/v1', desc: 'Base URL for all APIs' },
-                    { name: 'Swagger UI', url: 'http://localhost:8080/swagger-ui/index.html', desc: 'Interactive API docs' },
-                    { name: 'Health Check', url: 'http://localhost:8080/actuator/health', desc: 'Application health' },
-                    { name: 'H2 Console', url: 'http://localhost:8080/h2-console', desc: 'Database browser (JDBC URL: jdbc:h2:mem:fooddelivery)' },
+                    { name: 'REST API', url: 'http://localhost:8080/api/v1' },
+                    { name: 'Swagger UI', url: 'http://localhost:8080/swagger-ui.html' },
+                    { name: 'Health Check', url: 'http://localhost:8080/actuator/health' },
+                    { name: 'H2 Console', url: 'http://localhost:8080/h2-console' },
                   ].map((point) => (
                     <div key={point.name} className="bg-gray-900 rounded-lg p-4 border border-gray-600">
                       <h5 className="text-sm font-bold text-white">{point.name}</h5>
                       <p className="text-xs text-orange-400 font-mono mt-1 break-all">{point.url}</p>
-                      <p className="text-xs text-gray-500 mt-1">{point.desc}</p>
                     </div>
                   ))}
-                </div>
-              </div>
-
-              <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
-                <h3 className="text-xl font-bold text-white mb-4">🐛 Troubleshooting</h3>
-                <div className="space-y-4 text-sm">
-                  <div>
-                    <h5 className="text-yellow-400 font-semibold">Port 8080 already in use?</h5>
-                    <p className="text-gray-400 mt-1">Change server.port in application.properties or kill the existing process: <code className="bg-gray-700 px-1 rounded">lsof -i :8080</code></p>
-                  </div>
-                  <div>
-                    <h5 className="text-yellow-400 font-semibold">Lombok not working in IDE?</h5>
-                    <p className="text-gray-400 mt-1">Enable annotation processing: Settings → Build → Compiler → Annotations → Enable annotation processing</p>
-                  </div>
-                  <div>
-                    <h5 className="text-yellow-400 font-semibold">H2 Console not accessible?</h5>
-                    <p className="text-gray-400 mt-1">Use JDBC URL: <code className="bg-gray-700 px-1 rounded">jdbc:h2:mem:fooddelivery</code>, Username: <code className="bg-gray-700 px-1 rounded">sa</code>, Password: (leave empty)</p>
-                  </div>
-                  <div>
-                    <h5 className="text-yellow-400 font-semibold">Maven build fails?</h5>
-                    <p className="text-gray-400 mt-1">Ensure JAVA_HOME points to JDK 21: <code className="bg-gray-700 px-1 rounded">echo $JAVA_HOME</code>. Run <code className="bg-gray-700 px-1 rounded">mvn clean</code> first.</p>
-                  </div>
                 </div>
               </div>
             </div>
@@ -762,7 +592,6 @@ curl -X PUT http://localhost:8080/api/v1/deliveries/1/status \\
   );
 }
 
-// API Endpoint component
 function ApiEndpoint({ method, path, desc, body }: { method: string; path: string; desc: string; body?: string }) {
   const [expanded, setExpanded] = useState(false);
   
@@ -770,7 +599,6 @@ function ApiEndpoint({ method, path, desc, body }: { method: string; path: strin
     GET: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
     POST: 'bg-green-500/20 text-green-400 border-green-500/30',
     PUT: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-    DELETE: 'bg-red-500/20 text-red-400 border-red-500/30',
   };
 
   return (
@@ -788,7 +616,6 @@ function ApiEndpoint({ method, path, desc, body }: { method: string; path: strin
       </button>
       {expanded && body && (
         <div className="border-t border-gray-700 p-3">
-          <p className="text-xs text-gray-400 mb-2">Request Body:</p>
           <pre className="text-xs text-gray-300 bg-gray-800 rounded p-3 overflow-x-auto font-mono whitespace-pre-wrap">{body}</pre>
         </div>
       )}
@@ -796,25 +623,28 @@ function ApiEndpoint({ method, path, desc, body }: { method: string; path: strin
   );
 }
 
-// Import code strings
+// Import all code strings
 import {
   pomXml as pomXmlCode,
   applicationProperties as applicationPropertiesCode,
   mainApplication as mainAppCode,
-  menuItemEntity as menuItemEntityCode,
-  menuItemRepository as menuItemRepoCode,
+  sharedEnums as sharedEnumsCode,
+  sharedExceptions as sharedExceptionsCode,
+  globalExceptionHandler as exceptionHandlerCode,
+  menuEntities as menuEntityCode,
+  menuRepositories as menuRepoCode,
   menuService as menuServiceCode,
   menuController as menuControllerCode,
   orderEntity as orderEntityCode,
+  orderRepository as orderRepoCode,
   orderService as orderServiceCode,
   orderController as orderControllerCode,
   deliveryEntity as deliveryEntityCode,
+  deliveryRepository as deliveryRepoCode,
   deliveryService as deliveryServiceCode,
   deliveryController as deliveryControllerCode,
-  globalExceptionHandler as exceptionHandlerCode,
   dataSeeder as dataSeederCode,
   swaggerConfig as swaggerConfigCode,
-  projectStructure as projectStructureCode,
 } from './data/javaCode';
 
 export default App;
