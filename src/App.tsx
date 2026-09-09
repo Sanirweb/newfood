@@ -131,7 +131,7 @@ function App() {
           <div className="bg-gray-700/50 rounded-lg p-3">
             <p className="text-xs text-gray-400">Tech Stack</p>
             <div className="flex flex-wrap gap-1 mt-2">
-              {['Java 21', 'Spring Boot 3.3', 'H2', 'JPA'].map((tech) => (
+              {['Java 25', 'Spring Boot 4.1', 'H2', 'JPA'].map((tech) => (
                 <span key={tech} className="text-xs bg-gray-600 text-gray-300 px-2 py-0.5 rounded">
                   {tech}
                 </span>
@@ -167,7 +167,7 @@ function App() {
                   🍕 Food Delivery Modular Monolith
                 </h3>
                 <p className="text-gray-300 leading-relaxed">
-                  A complete food delivery backend system built as a modular monolith using Java 21, Spring Boot 3.3+, 
+                  A complete food delivery backend system built as a modular monolith using <strong className="text-orange-400">Java 25 (LTS)</strong>, <strong className="text-orange-400">Spring Boot 4.1.1</strong>, 
                   and H2 in-memory database. All source files are included in the <code className="bg-gray-700 px-2 py-0.5 rounded">food-delivery-backend/</code> directory.
                 </p>
               </div>
@@ -190,15 +190,15 @@ function App() {
                 <h4 className="text-lg font-semibold text-white mb-4">✨ Key Features</h4>
                 <div className="grid md:grid-cols-2 gap-3">
                   {[
-                    'Complete source code included',
-                    'Package-based modular boundaries',
+                    'Java 25 LTS (September 2025)',
+                    'Spring Boot 4.1.1 (latest stable)',
+                    'Spring Framework 7.x',
+                    'Jakarta EE 11 (Servlet 6.1)',
+                    'Hibernate 7.x ORM',
+                    'Jackson 3 (default JSON)',
+                    'Springdoc OpenAPI 3.1.1',
+                    'Modular test starters',
                     'Direct in-memory service injection',
-                    'Global exception handling',
-                    'Database seeder for instant testing',
-                    'Spring Boot Actuator health checks',
-                    'Interactive Swagger UI',
-                    'Bean validation',
-                    'Status transition validation',
                     'H2 in-memory database',
                   ].map((feature) => (
                     <div key={feature} className="flex items-center gap-2 text-sm text-gray-300">
@@ -206,6 +206,36 @@ function App() {
                       {feature}
                     </div>
                   ))}
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-xl p-6">
+                <h4 className="text-lg font-semibold text-green-400 mb-4">🆕 What's New: Java 25 + Spring Boot 4</h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <h5 className="text-sm font-bold text-white mb-2">Java 25 (LTS)</h5>
+                    <ul className="text-xs text-gray-400 space-y-1">
+                      <li>• Primitive types in pattern matching (JEP 507)</li>
+                      <li>• Compact Object Headers for memory efficiency</li>
+                      <li>• Generational ZGC improvements</li>
+                      <li>• Structured Concurrency finalized</li>
+                      <li>• Scoped Values finalized</li>
+                      <li>• Module Import Declarations</li>
+                      <li>• Long-Term Support until 2033+</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h5 className="text-sm font-bold text-white mb-2">Spring Boot 4.1.1</h5>
+                    <ul className="text-xs text-gray-400 space-y-1">
+                      <li>• Modular starter design (smaller JARs)</li>
+                      <li>• <code className="bg-gray-700 px-1 rounded">starter-web</code> → <code className="bg-gray-700 px-1 rounded">starter-webmvc</code></li>
+                      <li>• Jackson 3 as default JSON library</li>
+                      <li>• Jakarta EE 11 baseline</li>
+                      <li>• JSpecify null-safety annotations</li>
+                      <li>• Modular test starters</li>
+                      <li>• Java 17-26 compatibility</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
@@ -315,7 +345,7 @@ function App() {
                 <div className="bg-gray-900 rounded-lg p-6 border border-gray-600">
                   <div className="text-center mb-6">
                     <div className="inline-block bg-orange-500/20 border border-orange-500/30 rounded-lg px-6 py-3">
-                      <span className="text-orange-400 font-bold">Spring Boot 3.3+ Application (Port 8080)</span>
+                      <span className="text-orange-400 font-bold">Spring Boot 4.1.1 Application (Port 8080)</span>
                     </div>
                   </div>
 
@@ -387,25 +417,29 @@ function App() {
                 
                 <div className="space-y-6">
                   <div>
-                    <h4 className="text-md font-semibold text-orange-400 mb-2">1. Install JDK 21</h4>
+                    <h4 className="text-md font-semibold text-orange-400 mb-2">1. Install JDK 25 (LTS)</h4>
                     <div className="bg-gray-900 rounded-lg p-4 text-sm text-gray-300 space-y-2">
                       <p className="text-gray-400"># Ubuntu/Debian:</p>
-                      <p>sudo apt update && sudo apt install openjdk-21-jdk</p>
+                      <p>sudo apt update && sudo apt install openjdk-25-jdk</p>
                       <p className="mt-3 text-gray-400"># macOS (Homebrew):</p>
-                      <p>brew install openjdk@21</p>
+                      <p>brew install openjdk@25</p>
+                      <p className="mt-3 text-gray-400"># SDKMAN (recommended):</p>
+                      <p>sdk install java 25-open</p>
                       <p className="mt-3 text-gray-400"># Verify:</p>
-                      <p>java -version</p>
+                      <p>java -version  # Expected: openjdk version "25"</p>
                     </div>
                   </div>
 
                   <div>
-                    <h4 className="text-md font-semibold text-orange-400 mb-2">2. Install Maven</h4>
+                    <h4 className="text-md font-semibold text-orange-400 mb-2">2. Install Maven 3.9+</h4>
                     <div className="bg-gray-900 rounded-lg p-4 text-sm text-gray-300 space-y-2">
                       <p className="text-gray-400"># Ubuntu/Debian:</p>
                       <p>sudo apt install maven</p>
                       <p className="mt-3 text-gray-400"># macOS:</p>
                       <p>brew install maven</p>
-                      <p className="mt-3 text-gray-400"># Verify:</p>
+                      <p className="mt-3 text-gray-400"># SDKMAN:</p>
+                      <p>sdk install maven</p>
+                      <p className="mt-3 text-gray-400"># Verify (need 3.9+):</p>
                       <p>mvn -version</p>
                     </div>
                   </div>
@@ -486,7 +520,8 @@ function App() {
               <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
                 <h3 className="text-xl font-bold text-white mb-4">📡 API Endpoints</h3>
                 <p className="text-gray-400 text-sm mb-6">
-                  All endpoints prefixed with <code className="bg-gray-700 px-2 py-0.5 rounded text-orange-400">/api/v1</code>
+                  All endpoints prefixed with <code className="bg-gray-700 px-2 py-0.5 rounded text-orange-400">/api/v1</code>. 
+                  Interactive docs at <code className="bg-gray-700 px-2 py-0.5 rounded text-green-400">/swagger-ui.html</code>
                 </p>
 
                 <div className="mb-8">
@@ -576,6 +611,7 @@ function App() {
                     { name: 'Swagger UI', url: 'http://localhost:8080/swagger-ui.html' },
                     { name: 'Health Check', url: 'http://localhost:8080/actuator/health' },
                     { name: 'H2 Console', url: 'http://localhost:8080/h2-console' },
+                    { name: 'OpenAPI JSON', url: 'http://localhost:8080/api-docs' },
                   ].map((point) => (
                     <div key={point.name} className="bg-gray-900 rounded-lg p-4 border border-gray-600">
                       <h5 className="text-sm font-bold text-white">{point.name}</h5>

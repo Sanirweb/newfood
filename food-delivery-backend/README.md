@@ -1,189 +1,153 @@
 # Food Delivery Backend - Modular Monolith
 
-A comprehensive food delivery backend system built as a modular monolith using Java 21, Spring Boot 3.3+, and an in-memory H2 database.
+A comprehensive food delivery backend system built as a modular monolith using **Java 25** (LTS), **Spring Boot 4.1.1**, and an in-memory H2 database.
 
 ## 📁 Project Structure
 
 ```
 food-delivery-backend/
 │
-├── pom.xml                                    # Maven configuration with all dependencies
+├── pom.xml                                    # Maven config (Java 25, Spring Boot 4.1.1)
 │
 ├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── com/
-│   │   │       └── fooddelivery/
-│   │   │           │
-│   │   │           ├── FoodDeliveryApplication.java          # Main application entry point
-│   │   │           │
-│   │   │           ├── shared/                               # Shared components across domains
-│   │   │           │   ├── OrderStatus.java                  # Order status enum
-│   │   │           │   ├── DeliveryStatus.java               # Delivery status enum
-│   │   │           │   ├── MenuItemType.java                 # Menu item type enum
-│   │   │           │   ├── ResourceNotFoundException.java    # Custom exception
-│   │   │           │   ├── ValidationException.java          # Custom exception
-│   │   │           │   └── GlobalExceptionHandler.java       # Global exception handler
-│   │   │           │
-│   │   │           ├── menu/                                 # Menu Domain Module
-│   │   │           │   ├── entity/
-│   │   │           │   │   ├── MenuCategory.java             # Category entity
-│   │   │           │   │   └── MenuItem.java                 # Menu item entity
-│   │   │           │   ├── repository/
-│   │   │           │   │   ├── MenuCategoryRepository.java   # Category JPA repository
-│   │   │           │   │   └── MenuItemRepository.java       # Menu item JPA repository
-│   │   │           │   ├── service/
-│   │   │           │   │   └── MenuService.java              # Menu business logic
-│   │   │           │   └── controller/
-│   │   │           │       └── MenuController.java           # Menu REST endpoints
-│   │   │           │
-│   │   │           ├── order/                                # Order Domain Module
-│   │   │           │   ├── entity/
-│   │   │           │   │   ├── Order.java                    # Order entity
-│   │   │           │   │   └── OrderItem.java                # Order item entity
-│   │   │           │   ├── repository/
-│   │   │           │   │   └── OrderRepository.java          # Order JPA repository
-│   │   │           │   ├── service/
-│   │   │           │   │   └── OrderService.java             # Order business logic
-│   │   │           │   └── controller/
-│   │   │           │       └── OrderController.java          # Order REST endpoints
-│   │   │           │
-│   │   │           ├── delivery/                             # Delivery Domain Module
-│   │   │           │   ├── entity/
-│   │   │           │   │   └── Delivery.java                 # Delivery entity
-│   │   │           │   ├── repository/
-│   │   │           │   │   └── DeliveryRepository.java       # Delivery JPA repository
-│   │   │           │   ├── service/
-│   │   │           │   │   └── DeliveryService.java          # Delivery business logic
-│   │   │           │   └── controller/
-│   │   │           │       └── DeliveryController.java       # Delivery REST endpoints
-│   │   │           │
-│   │   │           └── config/                               # Configuration classes
-│   │   │               ├── DataSeeder.java                   # Database seeder
-│   │   │               └── SwaggerConfig.java                # OpenAPI/Swagger configuration
-│   │   │
-│   │   └── resources/
-│   │       └── application.properties                        # Application configuration
-│   │
-│   └── test/
-│       └── java/
-│           └── com/
-│               └── fooddelivery/                             # Test classes (empty for now)
+│   └── main/
+│       ├── java/
+│       │   └── com/
+│       │       └── fooddelivery/
+│       │           │
+│       │           ├── FoodDeliveryApplication.java          # Main entry point
+│       │           │
+│       │           ├── shared/                               # Shared components
+│       │           │   ├── OrderStatus.java                  # Order status enum
+│       │           │   ├── DeliveryStatus.java               # Delivery status enum
+│       │           │   ├── MenuItemType.java                 # Menu item type enum
+│       │           │   ├── ResourceNotFoundException.java    # Custom exception
+│       │           │   ├── ValidationException.java          # Custom exception
+│       │           │   └── GlobalExceptionHandler.java       # Global exception handler
+│       │           │
+│       │           ├── menu/                                 # Menu Domain Module
+│       │           │   ├── entity/
+│       │           │   │   ├── MenuCategory.java
+│       │           │   │   └── MenuItem.java
+│       │           │   ├── repository/
+│       │           │   │   ├── MenuCategoryRepository.java
+│       │           │   │   └── MenuItemRepository.java
+│       │           │   ├── service/
+│       │           │   │   └── MenuService.java
+│       │           │   └── controller/
+│       │           │       └── MenuController.java
+│       │           │
+│       │           ├── order/                                # Order Domain Module
+│       │           │   ├── entity/
+│       │           │   │   ├── Order.java
+│       │           │   │   └── OrderItem.java
+│       │           │   ├── repository/
+│       │           │   │   └── OrderRepository.java
+│       │           │   ├── service/
+│       │           │   │   └── OrderService.java
+│       │           │   └── controller/
+│       │           │       └── OrderController.java
+│       │           │
+│       │           ├── delivery/                             # Delivery Domain Module
+│       │           │   ├── entity/
+│       │           │   │   └── Delivery.java
+│       │           │   ├── repository/
+│       │           │   │   └── DeliveryRepository.java
+│       │           │   ├── service/
+│       │           │   │   └── DeliveryService.java
+│       │           │   └── controller/
+│       │           │       └── DeliveryController.java
+│       │           │
+│       │           └── config/                               # Configuration classes
+│       │               ├── DataSeeder.java                   # Database seeder
+│       │               └── SwaggerConfig.java                # OpenAPI/Swagger config
+│       │
+│       └── resources/
+│           └── application.properties                        # Application configuration
 │
-└── README.md                                                 # This file
+└── README.md
 ```
 
-## 🏗️ Architecture Overview
+## 🛠️ Tech Stack
 
-### Modular Monolith Design
+| Component | Version | Notes |
+|-----------|---------|-------|
+| **Java** | 25 (LTS) | Released September 2025 |
+| **Spring Boot** | 4.1.1 | Latest stable, supports Java 17-26 |
+| **Spring Framework** | 7.0.x | Required by Spring Boot 4 |
+| **Jakarta EE** | 11 | Servlet 6.1 baseline |
+| **Hibernate** | 7.x | Via Spring Data JPA |
+| **H2 Database** | Latest | In-memory |
+| **Jackson** | 3.x | Spring Boot 4 default |
+| **Springdoc OpenAPI** | 3.1.1 | Compatible with Spring Boot 4 |
+| **Lombok** | 1.18.36 | Latest |
+| **Maven** | 3.9+ | Build tool |
 
-This application follows a modular monolith architecture where three distinct domains are packaged separately but run in a single JVM:
+## 🚀 Prerequisites
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Spring Boot Application                   │
-│                      (Port 8080)                             │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐  │
-│  │  Menu Module │    │ Order Module │    │Delivery Module│  │
-│  │              │    │              │    │              │  │
-│  │ • MenuItem   │    │ • Order      │    │ • Delivery   │  │
-│  │ • Category   │    │ • OrderItem  │    │              │  │
-│  │              │    │              │    │              │  │
-│  └──────┬───────┘    └──────┬───────┘    └──────┬───────┘  │
-│         │                   │                   │           │
-│         └───────────────────┼───────────────────┘           │
-│                             │                               │
-│                    ┌────────▼────────┐                      │
-│                    │  Shared Layer   │                      │
-│                    │  • Enums        │                      │
-│                    │  • Exceptions   │                      │
-│                    └────────┬────────┘                      │
-│                             │                               │
-│                    ┌────────▼────────┐                      │
-│                    │  H2 Database    │                      │
-│                    │  (In-Memory)    │                      │
-│                    └─────────────────┘                      │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Cross-Module Communication
-
-- **OrderService** → **MenuService**: Validates menu items exist before creating orders
-- **DeliveryService** → **OrderService**: Validates orders exist, updates order status on delivery completion
-
-## 🛠️ Prerequisites
-
-- **Java 21** or higher
-- **Maven 3.6.0** or higher
-- **Git** (optional, for cloning)
-
-## 📦 Installation
-
-### 1. Install Java 21
+### 1. Install Java 25
 
 ```bash
 # Ubuntu/Debian
 sudo apt update
-sudo apt install openjdk-21-jdk
+sudo apt install openjdk-25-jdk
 
 # macOS (Homebrew)
-brew install openjdk@21
+brew install openjdk@25
 
-# Verify installation
+# SDKMAN (recommended)
+curl -s "https://get.sdkman.io" | bash
+sdk install java 25-open
+sdk use java 25-open
+
+# Verify
 java -version
+# Expected: openjdk version "25" ...
 ```
 
-### 2. Install Maven
+### 2. Install Maven 3.9+
 
 ```bash
 # Ubuntu/Debian
 sudo apt install maven
 
-# macOS (Homebrew)
+# macOS
 brew install maven
 
-# Verify installation
+# SDKMAN
+sdk install maven
+
+# Verify
 mvn -version
 ```
 
-### 3. Clone/Download the Project
+## 📦 Build & Run
 
 ```bash
+# Navigate to project
 cd food-delivery-backend
-```
 
-## 🚀 Build & Run
-
-### Build the Application
-
-```bash
+# Build
 mvn clean install
-```
 
-### Run the Application
-
-```bash
-# Option 1: Using Maven
+# Run
 mvn spring-boot:run
 
-# Option 2: Using JAR
+# Or run the JAR directly
 java -jar target/food-delivery-backend-1.0.0.jar
 ```
 
-### Access Points
+## 🌐 Access Points
 
 | Endpoint | URL | Description |
 |----------|-----|-------------|
-| Application | http://localhost:8080 | Root URL |
+| REST API | http://localhost:8080/api/v1 | Base URL |
 | Swagger UI | http://localhost:8080/swagger-ui.html | Interactive API docs |
 | H2 Console | http://localhost:8080/h2-console | Database browser |
 | Health Check | http://localhost:8080/actuator/health | Application health |
+| API Docs (JSON) | http://localhost:8080/api-docs | OpenAPI JSON |
 
 ### H2 Console Credentials
-
 - **JDBC URL**: `jdbc:h2:mem:testdb`
 - **Username**: `sa`
 - **Password**: (leave empty)
@@ -191,122 +155,37 @@ java -jar target/food-delivery-backend-1.0.0.jar
 ## 📡 API Reference
 
 ### Menu Domain
-
-#### Get All Menu Items
-```bash
-GET /api/v1/items
-```
-
-#### Create Menu Item
-```bash
-POST /api/v1/items
-Content-Type: application/json
-
-{
-  "name": "Veggie Pizza",
-  "description": "Pizza with vegetables",
-  "price": 14.99,
-  "type": "FOOD",
-  "categoryId": 1
-}
-```
-
-#### Get All Menu Categories
-```bash
-GET /api/v1/menus
-```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/v1/menus` | Get all categories |
+| GET | `/api/v1/items` | Get all menu items |
+| POST | `/api/v1/items` | Create menu item |
 
 ### Order Domain
-
-#### Create Order
-```bash
-POST /api/v1/orders
-Content-Type: application/json
-
-{
-  "customerName": "John Doe",
-  "customerAddress": "123 Main St",
-  "customerPhone": "555-1234",
-  "orderItems": [
-    {
-      "menuItemId": 1,
-      "menuItemName": "Margherita Pizza",
-      "quantity": 2,
-      "unitPrice": 12.99
-    }
-  ]
-}
-```
-
-#### Get Order by ID
-```bash
-GET /api/v1/orders/{id}
-```
-
-#### Update Order Status
-```bash
-PUT /api/v1/orders/{id}/status?status=CONFIRMED
-```
-
-**Valid Status Transitions:**
-- `PENDING` → `CONFIRMED` or `CANCELLED`
-- `CONFIRMED` → `DELIVERING` or `CANCELLED`
-- `DELIVERING` → `COMPLETED` or `CANCELLED`
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/orders` | Create order |
+| GET | `/api/v1/orders/{id}` | Get order by ID |
+| PUT | `/api/v1/orders/{id}/status?status=X` | Update status |
 
 ### Delivery Domain
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/deliveries` | Assign driver |
+| GET | `/api/v1/deliveries/order/{orderId}` | Get deliveries |
+| PUT | `/api/v1/deliveries/{id}/status?status=X` | Update status |
 
-#### Assign Driver
-```bash
-POST /api/v1/deliveries
-Content-Type: application/json
-
-{
-  "orderId": 1,
-  "driverName": "Mike Johnson",
-  "driverPhone": "555-5678",
-  "deliveryAddress": "123 Main St"
-}
-```
-
-#### Get Deliveries for Order
-```bash
-GET /api/v1/deliveries/order/{orderId}
-```
-
-#### Update Delivery Status
-```bash
-PUT /api/v1/deliveries/{id}/status?status=PICKED_UP
-```
-
-**Valid Status Transitions:**
-- `ASSIGNED` → `PICKED_UP` or `DELIVERED`
-- `PICKED_UP` → `DELIVERED`
+### Status Transitions
+- **Order**: PENDING → CONFIRMED → DELIVERING → COMPLETED (or CANCELLED at any stage)
+- **Delivery**: ASSIGNED → PICKED_UP → DELIVERED
 
 ## 🧪 Testing with cURL
 
-### Menu Tests
 ```bash
 # Get all menu items
-curl -X GET http://localhost:8080/api/v1/items
+curl http://localhost:8080/api/v1/items
 
-# Get all categories
-curl -X GET http://localhost:8080/api/v1/menus
-
-# Create a new menu item
-curl -X POST http://localhost:8080/api/v1/items \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Veggie Pizza",
-    "description": "Pizza with vegetables",
-    "price": 14.99,
-    "type": "FOOD",
-    "categoryId": 1
-  }'
-```
-
-### Order Tests
-```bash
-# Create a new order
+# Create an order
 curl -X POST http://localhost:8080/api/v1/orders \
   -H "Content-Type: application/json" \
   -d '{
@@ -314,72 +193,48 @@ curl -X POST http://localhost:8080/api/v1/orders \
     "customerAddress": "456 Oak Ave",
     "customerPhone": "555-9876",
     "orderItems": [
-      {
-        "menuItemId": 1,
-        "menuItemName": "Margherita Pizza",
-        "quantity": 1,
-        "unitPrice": 12.99
-      }
+      {"menuItemId": 1, "menuItemName": "Margherita Pizza", "quantity": 2, "unitPrice": 12.99}
     ]
   }'
 
-# Get order by ID
-curl -X GET http://localhost:8080/api/v1/orders/1
-
 # Update order status
 curl -X PUT "http://localhost:8080/api/v1/orders/1/status?status=CONFIRMED"
-```
 
-### Delivery Tests
-```bash
-# Assign driver to order
+# Assign driver
 curl -X POST http://localhost:8080/api/v1/deliveries \
   -H "Content-Type: application/json" \
   -d '{
     "orderId": 1,
-    "driverName": "Sarah Wilson",
-    "driverPhone": "555-4321",
+    "driverName": "Alex Rivera",
+    "driverPhone": "555-7890",
     "deliveryAddress": "456 Oak Ave"
   }'
-
-# Get deliveries for order
-curl -X GET http://localhost:8080/api/v1/deliveries/order/1
 
 # Update delivery status
 curl -X PUT "http://localhost:8080/api/v1/deliveries/1/status?status=PICKED_UP"
 curl -X PUT "http://localhost:8080/api/v1/deliveries/1/status?status=DELIVERED"
 ```
 
+## 🔄 Spring Boot 4 Migration Notes
+
+This project uses Spring Boot 4.1.1 which includes:
+
+- **Modular Starters**: `spring-boot-starter-web` → `spring-boot-starter-webmvc`
+- **Jackson 3**: Default JSON library (new `tools.jackson` packages)
+- **Jakarta EE 11**: Servlet 6.1 baseline
+- **Hibernate 7**: Latest ORM with Java 25 support
+- **Modular Test Starters**: `spring-boot-starter-webmvc-test`, `spring-boot-starter-data-jpa-test`
+- **JSpecify Annotations**: Better null-safety support
+
 ## 🐛 Troubleshooting
 
-### Common Issues
-
-1. **Port Already in Use**
-   - Error: `Port 8080 was already in use`
-   - Solution: Stop other applications using port 8080 or change `server.port` in `application.properties`
-
-2. **Java Version Mismatch**
-   - Error: `Unsupported class file major version`
-   - Solution: Ensure you're using Java 21 (`java -version`)
-
-3. **Maven Dependencies Not Found**
-   - Solution: Run `mvn dependency:resolve`
-
-4. **H2 Console Not Accessible**
-   - Use JDBC URL: `jdbc:h2:mem:testdb`
-   - Username: `sa`
-   - Password: (empty)
-
-5. **Lombok Not Working in IDE**
-   - Enable annotation processing in IDE settings
-   - IntelliJ: Settings → Build → Compiler → Annotations → Enable
-
-## 📝 Notes
-
-- The application automatically seeds sample data on startup
-- H2 database is in-memory (data is lost on restart)
-- All modules communicate via direct service injection (no HTTP calls)
-- Status transitions are validated to maintain data integrity
+| Issue | Solution |
+|-------|----------|
+| Port 8080 in use | Change `server.port` in application.properties |
+| Java version mismatch | Ensure `JAVA_HOME` points to JDK 25 |
+| Lombok not working | Enable annotation processing in IDE |
+| H2 console not working | Use JDBC URL: `jdbc:h2:mem:testdb`, user: `sa`, no password |
+| Maven build fails | Run `mvn clean` first, ensure Maven 3.9+ |
 
 ## 📄 License
 

@@ -14,6 +14,8 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("Food Delivery API")
                         .version("1.0")
-                        .description("API for food delivery system"));
+                        .description("Modular Monolith Food Delivery System API\n\n" +
+                                "Built with Java 25 (LTS) + Spring Boot 4.1.1\n" +
+                                "Spring Framework 7.x | Jakarta EE 11 | Hibernate 7.x | Jackson 3"));
     }
 }

@@ -11,13 +11,14 @@ export const pomXml = `<?xml version="1.0" encoding="UTF-8"?>
     <packaging>jar</packaging>
 
     <name>Food Delivery Backend</name>
-    <description>Modular Monolith Food Delivery System</description>
+    <description>Modular Monolith Food Delivery System - Java 25 + Spring Boot 4.1</description>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <java.version>25</java.version>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.boot.version>3.3.0</spring.boot.version>
+        <spring.boot.version>4.1.1</spring.boot.version>
     </properties>
 
     <dependencyManagement>
@@ -33,41 +34,62 @@ export const pomXml = `<?xml version="1.0" encoding="UTF-8"?>
     </dependencyManagement>
 
     <dependencies>
+        <!-- Spring Boot Starter Web MVC (renamed from spring-boot-starter-web in 4.0) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
+
+        <!-- Spring Boot Starter Data JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+
+        <!-- Spring Boot Starter Validation -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+
+        <!-- H2 Database -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <!-- Spring Boot Starter Actuator -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
+        <!-- SpringDoc OpenAPI 3.x (compatible with Spring Boot 4) -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.1.0</version>
+            <version>3.1.1</version>
         </dependency>
+
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
+            <version>1.18.36</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- Spring Boot 4 Modular Test Starters -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -86,39 +108,74 @@ export const pomXml = `<?xml version="1.0" encoding="UTF-8"?>
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.0</version>
+                <configuration>
+                    <source>25</source>
+                    <target>25</target>
+                    <release>25</release>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>`;
 
-export const applicationProperties = `# Server Configuration
+export const applicationProperties = `# ============================================
+# Application Configuration
+# Java 25 + Spring Boot 4.1.1
+# ============================================
+spring.application.name=food-delivery-backend
+
+# Server Configuration
 server.port=8080
 
-# H2 Database Configuration
+# ============================================
+# H2 Database Configuration (In-Memory)
+# ============================================
 spring.datasource.url=jdbc:h2:mem:testdb
 spring.datasource.driverClassName=org.h2.Driver
 spring.datasource.username=sa
 spring.datasource.password=
 
-# JPA Configuration
+# H2 Console
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+# ============================================
+# JPA / Hibernate 7.x Configuration
+# ============================================
 spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 spring.jpa.hibernate.ddl-auto=create-drop
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 
-# H2 Console
-spring.h2.console.enabled=true
-spring.h2.console.path=/h2-console
-
-# Actuator
-management.endpoints.web.exposure.include=health,info
+# ============================================
+# Spring Boot Actuator
+# ============================================
+management.endpoints.web.exposure.include=health,info,metrics
 management.endpoint.health.show-details=always
+management.endpoint.health.probes.enabled=true
 
-# Logging
-logging.level.com.fooddelivery=DEBUG
-
-# SpringDoc
+# ============================================
+# SpringDoc OpenAPI 3.x (Swagger UI)
+# ============================================
 springdoc.api-docs.path=/api-docs
-springdoc.swagger-ui.path=/swagger-ui.html`;
+springdoc.swagger-ui.path=/swagger-ui.html
+springdoc.swagger-ui.enabled=true
+
+# ============================================
+# Jackson 3 (Spring Boot 4 default)
+# ============================================
+# Spring Boot 4 uses Jackson 3 by default
+# For Jackson 2 compat: spring.jackson.use-jackson2-defaults=true
+
+# ============================================
+# Logging
+# ============================================
+logging.level.com.fooddelivery=DEBUG
+logging.level.org.springframework.web=DEBUG`;
 
 export const mainApplication = `package com.fooddelivery;
 
@@ -555,11 +612,12 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    // Cross-module dependency: Direct injection of MenuService
     @Autowired
-    private MenuService menuService;  // Cross-module dependency
+    private MenuService menuService;
 
     public Order createOrder(Order order) {
-        // Validate all menu items exist (cross-module call to MenuService)
+        // Cross-module call: Validate all menu items exist
         for (OrderItem item : order.getOrderItems()) {
             if (!menuService.validateItemExists(item.getMenuItemId())) {
                 throw new ValidationException("Menu item not found with id: " + item.getMenuItemId());
@@ -737,8 +795,9 @@ public class DeliveryService {
     @Autowired
     private DeliveryRepository deliveryRepository;
 
+    // Cross-module dependency: Direct injection of OrderService
     @Autowired
-    private OrderService orderService;  // Cross-module dependency
+    private OrderService orderService;
 
     public Delivery assignDriver(Delivery delivery) {
         // Cross-module call: validate order exists
@@ -904,12 +963,13 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("Food Delivery API")
                         .version("1.0")
-                        .description("Modular Monolith Food Delivery System API"));
+                        .description("Modular Monolith Food Delivery System API\\n\\n" +
+                                "Built with Java 25 + Spring Boot 4.1.1"));
     }
 }`;
 
 export const projectStructure = `food-delivery-backend/
-├── pom.xml
+├── pom.xml                              (Java 25, Spring Boot 4.1.1)
 ├── README.md
 └── src/main/
     ├── java/com/fooddelivery/
